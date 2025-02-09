@@ -1,6 +1,11 @@
+import sys
 import pandas as pd
 
-class statistique():
+
+DATASETS_LOCATION = "../datasets/"
+
+
+class statistics():
     def __init__(self, features):
         self.features = sorted(features.dropna().tolist())
 
@@ -28,13 +33,13 @@ class statistique():
             return self.features[index]
         else:
             return self.features[index]
-        
+
     def maxf(self):
         return max(self.features)
-    
+
 
 def get_informations(features):
-    stats = statistique(features)
+    stats = statistics(features)
     return {
         'Count': stats.countf(),
         'Mean': stats.meanf(),
@@ -46,17 +51,24 @@ def get_informations(features):
         'Max': stats.maxf(),
     }
 
+
 def ft_describe(df):
     summary = {}
     for col in df.select_dtypes(include=['number']).columns:
         summary[col] = get_informations(df[col])
     return pd.DataFrame(summary)
 
+
 def main():
     try:
-        df = pd.read_csv('datasets/dataset_train.csv')
+        if len(sys.argv) != 2:
+            print("Usage: python script.py <dataset_filename>")
+            return
+        df = pd.read_csv(f'{DATASETS_LOCATION}{sys.argv[1]}')
         print(ft_describe(df))
     except Exception as error:
         print(f'{type(error).__name__}: {error}')
 
-main()
+
+if __name__ == "__main__":
+    main()
