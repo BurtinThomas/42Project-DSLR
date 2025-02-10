@@ -2,9 +2,11 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+
 def pair_plot(df):
     sns.pairplot(df, hue='Hogwarts House')
     plt.show()
+
 
 def main():
     try:
@@ -14,6 +16,7 @@ def main():
         print(f"{type(error).__name__} : {error}")
     except KeyboardInterrupt:
         print("\nInput interrupted. Exiting...")
+
 
 if __name__ == "__main__":
     main()

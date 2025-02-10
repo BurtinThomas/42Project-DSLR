@@ -61,10 +61,15 @@ def ft_describe(df):
 
 def main():
     try:
-        if len(sys.argv) != 2:
+        length = len(sys.argv)
+        if length > 2:
             print("Usage: python script.py <dataset_filename>")
             return
-        df = pd.read_csv(f'{DATASETS_LOCATION}{sys.argv[1]}')
+        elif length == 1:
+            dataset = "dataset_train.csv"
+        else:
+            dataset = sys.argv[1]
+        df = pd.read_csv(f'{DATASETS_LOCATION}{dataset}')
         print(ft_describe(df))
     except Exception as error:
         print(f'{type(error).__name__}: {error}')

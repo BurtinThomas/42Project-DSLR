@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+
 def split_house(df, col):
     houses = df['Hogwarts House'].unique()
     colors = {'Gryffindor': 'red', 'Hufflepuff': 'yellow', 'Ravenclaw': 'blue', 'Slytherin': 'green'}
@@ -20,6 +21,7 @@ def scatter(df):
         plt.tight_layout()
     plt.show()
 
+
 def main():
     try:
         df = pd.read_csv('../datasets/dataset_train.csv')
@@ -28,6 +30,7 @@ def main():
         print(f"{type(error).__name__} : {error}")
     except KeyboardInterrupt:
         print("\nInput interrupted. Exiting...")
+
 
 if __name__ == "__main__":
     main()
