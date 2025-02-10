@@ -1,3 +1,4 @@
+import os
 import sys
 import pandas as pd
 import numpy as np
@@ -15,7 +16,7 @@ class Training:
         self.weights = {}
         self.x = None
         self.y = None
-        self.cost_history = []
+        self.cost_history = {}
 
         self.load_data()
         self.preprocess_data()
@@ -58,15 +59,16 @@ class Training:
     def gradient_descent(self, x, y):
         m, n = x.shape
         theta = np.zeros(n)
+        costs = []
         for i in range(NUM_ITERATIONS):
             predictions = self.sigmoid(np.dot(x, theta))
             gradient = np.dot(x.T, (predictions - y)) / m # T => matrice x transposition
             theta -= LEARNING_RATE * gradient
             
             cost = self.compute_cost(self.x, self.y, theta)
-            self.cost_history.append(cost)
+            costs.append(cost)
             
-        return theta
+        return theta, costs
 
     
     def train(self):
@@ -76,11 +78,16 @@ class Training:
         unique_labels = np.unique(self.y)
         for label in unique_labels:
             y_binary = (self.y == label).astype(int)
-            self.weights[label] = self.gradient_descent(self.x, y_binary)
+            self.weights[label], self.cost_history[label] = self.gradient_descent(self.x, y_binary)
 
     
     def save_weights(self):
+        os.makedirs(WEIGHTS_LOCATION, exist_ok=True)
         np.save(f"{WEIGHTS_LOCATION}weights.npy", self.weights)
+
+        for label, costs in self.cost_history.items():
+            df = pd.DataFrame(costs, columns=["Cost"])
+            df.to_csv(f"{WEIGHTS_LOCATION}cost_history_{label}.csv", index=False)
 
 
 def main():
