@@ -19,19 +19,24 @@ def load_model(model_file):
     return model['weights'], model['biases']
 
 def main():
-    df = pd.read_csv('../datasets/dataset_test.csv')
-    df = df.drop('Hogwarts House', axis=1)
-    df = df.dropna()
+    try:
+        df = pd.read_csv('../datasets/dataset_test.csv')
+        df = df.drop('Hogwarts House', axis=1)
+        df = df.dropna()
 
-    numeric_columns = [col for col in df.select_dtypes(include=['number']).columns if col != 'Index']
-    x = df[numeric_columns].values
+        numeric_columns = [col for col in df.select_dtypes(include=['number']).columns if col != 'Index']
+        x = df[numeric_columns].values
 
-    scaler = StandardScaler()
-    X = scaler.fit_transform(x)
+        scaler = StandardScaler()
+        X = scaler.fit_transform(x)
 
-    weights, biases = load_model('parametre.pkl')
-    y_pred = [predict(x, weights, biases) for x in X]
-    result_df = pd.DataFrame(y_pred)
-    print(result_df)
+        weights, biases = load_model('parametre.pkl')
+        y_pred = [predict(x, weights, biases) for x in X]
+        result_df = pd.DataFrame(y_pred)
+        print(result_df)
+    except Exception as error:
+        print(f"{type(error).__name__} : {error}")
+    except KeyboardInterrupt:
+        print("\nInput interrupted. Exiting...")
 
 main()

@@ -66,7 +66,7 @@ def main():
         
         weights, biases = one_vs_rest(X, y, learning_rate, iterations)
         accuracy = evaluate_performance(X, y, weights, biases)
-        print(accuracy)
+        print(f'la performance du model est {accuracy}')
         save_model(weights, biases, 'parametre.pkl', )
     except Exception as error:
         print(f"{type(error).__name__} : {error}")
